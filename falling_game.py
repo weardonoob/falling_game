@@ -24,11 +24,12 @@ def draw():
     screen.draw.text("woho you won the game", fontsize = 30, color = "black", center = (WIDTH / 2, HEIGHT / 2))
   elif game_state == "game_over":
     screen.draw.text("better luck next time", fontsize = 30, color = "black", center = (WIDTH / 2, HEIGHT / 2))
-  
+
     
 def update():
   global items
-  if len(items) == 0:
+  if game_state == "play":
+   if len(items) == 0:
     items = make_items(lvl)
 
 def make_items(lvl):
@@ -69,7 +70,7 @@ def animate_items(new_items):
 def handle_game_over():
   global game_state
   game_state = "game_over"
-
+  print(game_state)
 def on_mouse_down(pos):
   global items, lvl
   for i in items:
@@ -81,14 +82,20 @@ def on_mouse_down(pos):
 
 def lvl_complete():
   global lvl, items, animations, game_state
+  stop_animation(animations)
   if lvl == 6:
-    game_state = "completed"  
+    game_state = "completed" 
+    animations = [] 
+    items = []
   else:
     lvl += 1
     animations = []
     items = []
-
-
+  print(lvl)
+def stop_animation(anim):
+  for i in anim:
+    if i.running:
+      i.stop()
 
 
 pgzrun.go()
